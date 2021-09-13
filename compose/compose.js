@@ -14,9 +14,27 @@ function fn1(x) {
   const a = compose(fn1, fn2, fn3, fn4);
   console.log(a(1)); // 1+4+3+2+1=11
   
-function compose(fn1,fn2,fn3,fn4) {
-    let arr = [fn1,fn2,fn3,fn4];
-    arr.map(func => {
-        return 
+
+function compose(...fn) {
+    if(fn.length === 0) {
+        return function (val) {
+            return val
+        }
+    }
+    if(fn.length === 1) {
+        return fn[0]
+    }
+    return fn.reduce(function(prev,cur) {
+        return function(...args) {
+            return prev(cur(...args))
+        }
     })
+}
+function compose(...fn) {
+    if(!fn.length) (v) => v;
+    if(fn.length === 1) return fn[0];
+    return fn.reduce((prev,cur) => 
+        (...args) => 
+            prev(cur(...args))
+    )
 }
